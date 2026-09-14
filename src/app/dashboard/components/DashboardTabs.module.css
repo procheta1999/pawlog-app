@@ -1,0 +1,8 @@
+.tabs :global(.MuiTabs-indicator) {
+  background-color: #2e7d32;
+}
+
+.tab:global(.Mui-selected) {
+  color: #2e7d32 !important;
+  font-weight: 600;
+}

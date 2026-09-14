@@ -1,0 +1,13 @@
+import Box from '@mui/material/Box';
+import { AppHeader } from './components/AppHeader';
+import DashboardTabs from './components/DashboardTabs';
+
+export default function DashboardLayout({ children }) {
+  return (
+    <Box sx={{ width: '100%' }}>
+      <AppHeader />
+      <DashboardTabs />
+      {children}
+    </Box>
+  );
+}
