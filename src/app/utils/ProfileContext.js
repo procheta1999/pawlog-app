@@ -7,13 +7,13 @@ const ProfileContext = createContext(null);
 
 export function ProfileProvider({ children, profile, setProfile }) {
   const { schema = [], loading = true } = profile || {};
-  const getValue = (field) => schema.find((schemaItem) => schemaItem.field === field)?.value || '';
+  const getFieldValue = (field) => schema.find((schemaItem) => schemaItem.field === field)?.value || '';
   const profileWithDetails = {
     schema,
     loading,
     setProfile,
-    name: getValue('petName'),
-    metadata: `${getValue('petBreed')} • ${getValue('petAge')} • ${getValue('petWeight')} kg`,
+    name: getFieldValue('petName'),
+    metadata: `${getFieldValue('petBreed')} • ${getFieldValue('petAge')} • ${getFieldValue('petWeight')} kg`,
   };
 
   return (

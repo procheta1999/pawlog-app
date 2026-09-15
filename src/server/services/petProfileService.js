@@ -2,7 +2,7 @@ import PetProfile from '../model/petProfileModel';
 import connectDB from '../config/db';
 
 function formatProfileData(profile) {
-  const safeProfile = profile || {
+  const profileDetails = profile || {
     petName: '',
     petBreed: '',
     petWeight: '',
@@ -12,22 +12,22 @@ function formatProfileData(profile) {
   return [
     {
       field: 'petName',
-      value: safeProfile.petName || '',
+      value: profileDetails.petName || '',
       type: 'input',
     },
     {
       field: 'petBreed',
-      value: safeProfile.petBreed || '',
+      value: profileDetails.petBreed || '',
       type: 'input',
     },
     {
       field: 'petWeight',
-      value: safeProfile.petWeight || '',
+      value: profileDetails.petWeight || '',
       type: 'input',
     },
     {
       field: 'petAge',
-      value: safeProfile.petAge || '',
+      value: profileDetails.petAge || '',
       type: 'input',
     },
   ];

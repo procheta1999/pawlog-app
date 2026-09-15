@@ -3,7 +3,7 @@
 import { Box, Button, TextField } from '@mui/material';
 import React, { useState } from 'react';
 import { TitleHeader } from './ContentStyling';
-import { formMapping } from '@/app/utils/formMapping';
+import { formMapping } from '@/app/utils/FormMapping';
 
 export const fieldTypes={
     "INPUT":"input"
