@@ -7,7 +7,7 @@ export default function DashboardLayout({ children }) {
     <Box sx={{ width: '100%' }}>
       <AppHeader />
       <DashboardTabs />
-      {children}
+      <Box sx={{ margin: { xs: '1rem', md: '2rem' } }}>{children}</Box>
     </Box>
   );
 }

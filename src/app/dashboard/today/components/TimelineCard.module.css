@@ -1,0 +1,160 @@
+.card {
+  width: 100%;
+  border-color: #edf0f4;
+  border-radius: 1.5rem;
+  box-shadow: 0 2px 12px rgba(31, 45, 61, 0.06);
+  overflow: hidden;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.25rem 1.5rem 0.75rem;
+}
+
+.title {
+  font-weight: 700;
+}
+
+.recordButton {
+  min-height: 44px;
+  border-radius: 0.75rem;
+  background-color: #208f68;
+  box-shadow: none;
+  text-transform: none;
+  white-space: nowrap;
+}
+
+.recordButton:hover {
+  background-color: #176f50;
+  box-shadow: none;
+}
+
+.stepper {
+  padding: 0.5rem 1.5rem 1rem;
+}
+
+.stepper :global(.MuiStep-root) {
+  min-height: 76px;
+}
+
+.stepper :global(.MuiStepLabel-root) {
+  align-items: flex-start;
+  padding: 0;
+}
+
+.stepper :global(.MuiStepLabel-iconContainer) {
+  flex: 0 0 42px;
+  width: 42px;
+  padding-right: 1rem;
+  padding-top: 0;
+}
+
+.stepper :global(.MuiStepLabel-labelContainer) {
+  flex: 1;
+  width: 100%;
+}
+
+.stepper :global(.MuiStepLabel-label) {
+  display: block;
+  width: 100%;
+  margin: 0;
+}
+
+.connector {
+  margin-left: 1rem;
+}
+
+.connector :global(.MuiStepConnector-line) {
+  border-color: #dce6e8;
+}
+
+.eventIcon {
+  display: grid;
+  width: 42px;
+  height: 42px;
+  place-items: center;
+  border-radius: 50%;
+  background-color: #f1f7f8;
+  color: #10233f;
+}
+
+.eventIcon svg {
+  font-size: 1.5rem;
+}
+
+.stepHeader {
+  display: grid;
+  grid-template-columns: 4rem minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: 0.75rem;
+  min-height: 64px;
+  padding: 0 0 0.75rem;
+  border-bottom: 1px solid #edf0f4;
+}
+
+.time {
+  color: #64748b;
+  font-weight: 600;
+}
+
+.eventDetails {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+}
+
+.eventTitle {
+  font-weight: 700;
+}
+
+.status {
+  font-weight: 600;
+}
+
+.confirmed {
+  background-color: #eaf8f1;
+  color: #208451;
+}
+
+.approximate {
+  background-color: #fff1d6;
+  color: #a85c17;
+}
+
+.needsReview {
+  background-color: #ffe7e7;
+  color: #d33d3d;
+}
+
+.scheduled {
+  background-color: #e7f0ff;
+  color: #2868c7;
+}
+
+@media (max-width: 700px) {
+  .header {
+    align-items: flex-start;
+    flex-direction: column;
+    padding-inline: 1rem;
+  }
+
+  .recordButton {
+    width: 100%;
+  }
+
+  .stepper {
+    padding-inline: 1rem;
+  }
+
+  .stepHeader {
+    grid-template-columns: 3rem minmax(0, 1fr) auto;
+  }
+
+  .status {
+    grid-column: 2;
+    justify-self: start;
+  }
+}

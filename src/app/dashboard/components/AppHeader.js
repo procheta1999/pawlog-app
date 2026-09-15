@@ -1,9 +1,10 @@
 "use client";
 
 import React from 'react';
-import { AppBar, IconButton, Toolbar, Typography } from "@mui/material";
+import { AppBar, IconButton, Toolbar } from "@mui/material";
 import PetsIcon from '@mui/icons-material/Pets';
 import styles from './AppHeader.module.css';
+import { SubtitleHeader, TitleHeader } from './ContentStyling';
 
 export const AppHeader=()=>{
   return (
@@ -25,12 +26,8 @@ export const AppHeader=()=>{
            <PetsIcon fontSize="large" className={styles.petsIcon}/>
           </IconButton>
           <div>
-          <Typography variant="h5" noWrap component="div" className={styles.title}>
-            PawLog
-          </Typography>
-          <Typography variant="caption" noWrap component="div" className={styles.subtitle}>
-            Systematic care logs for your pet
-          </Typography>
+          <TitleHeader variant="h5" content="PawLog" />
+          <SubtitleHeader content="Systematic care logs for your pet" />
           </div>
         </Toolbar>
     </AppBar>

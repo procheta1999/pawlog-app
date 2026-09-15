@@ -20,11 +20,6 @@ const DashboardItems=[
     label:"Care Plans",
     value:"three",
     route:"/dashboard/carePlans"
-  },
-  {
-    label:"Health",
-    value:"four",
-    route:"/dashboard/health"
   }
 ];
 

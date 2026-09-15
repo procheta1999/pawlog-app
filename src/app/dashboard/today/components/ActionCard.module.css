@@ -1,0 +1,60 @@
+.cards {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.card {
+  height: 100%;
+  border: 0;
+  box-shadow: none;
+}
+
+.actionArea {
+  min-height: 104px;
+  height: 100%;
+  padding: 1rem;
+  border-radius: 1rem;
+}
+
+.content {
+  height: 100%;
+  padding: 0;
+}
+
+.content:last-child {
+  padding-bottom: 0;
+}
+
+.count {
+  font-weight: 700;
+  line-height: 1;
+}
+
+.label {
+  margin-top: 0.5rem;
+  font-weight: 600;
+}
+
+.actionArea.recorded {
+  background-color: #eaf8f1;
+  color: #208451;
+}
+
+.actionArea.scheduled {
+  background-color: #edf4ff;
+  color: #2868c7;
+}
+
+.actionArea.needsReview {
+  background-color: #fff0f0;
+  color: #db3b3b;
+}
+
+@media (min-width: 600px) {
+  .cards {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    margin-top: 1.5rem;
+  }
+}
