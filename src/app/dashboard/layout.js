@@ -33,7 +33,7 @@ export default function DashboardLayout({ children }) {
   return (
     <ProfileProvider profile={profileData} setProfile={setProfileData}>
       <Box sx={{ width: '100%' }}>
-        <AppHeader />
+        <AppHeader title="PawLog" subtitle="Systematic care logs for your pet" />
         <DashboardTabs />
         <Box sx={{ margin: { xs: '1rem', md: '2rem' } }}>{children}</Box>
       </Box>

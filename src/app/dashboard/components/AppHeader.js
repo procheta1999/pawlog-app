@@ -6,7 +6,7 @@ import PetsIcon from '@mui/icons-material/Pets';
 import styles from './AppHeader.module.css';
 import { SubtitleHeader, TitleHeader } from './ContentStyling';
 
-export const AppHeader=()=>{
+export const AppHeader=({title, subtitle})=>{
   return (
     <AppBar
       position="static"
@@ -26,8 +26,8 @@ export const AppHeader=()=>{
            <PetsIcon fontSize="large" className={styles.petsIcon}/>
           </IconButton>
           <div>
-          <TitleHeader variant="h5" content="PawLog" />
-          <SubtitleHeader content="Systematic care logs for your pet" />
+          <TitleHeader variant="h5" content={title} />
+          <SubtitleHeader content={subtitle} />
           </div>
         </Toolbar>
     </AppBar>

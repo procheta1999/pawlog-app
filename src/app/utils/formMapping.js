@@ -4,3 +4,6 @@ export const formMapping={
     "petAge":"Age",
     "petBreed":"Breed" 
 };
+export const fieldTypes={
+    "INPUT":"input"
+};

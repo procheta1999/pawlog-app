@@ -4,33 +4,17 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import { usePathname, useRouter } from 'next/navigation';
 import styles from './DashboardTabs.module.css';
+import { DashboardItems } from '@/app/utils/dashboardItems';
 
-const DashboardItems=[
-  {
-    label:"Today",
-    value:"one",
-    route:"/dashboard/today"
-  },
-  {
-    label:"Timeline",
-    value:"two",
-    route:"/dashboard/timeline"
-  },
-  {
-    label:"Care Plans",
-    value:"three",
-    route:"/dashboard/carePlans"
-  }
-];
 
-const DashboardTabItem = forwardRef(function DashboardTabItem(
+export const DashboardTabItem = forwardRef(function DashboardTabItem(
   { label, value, ...tabProps },
   ref,
 ) {
   return <Tab ref={ref} {...tabProps} value={value} label={label} />;
 });
 
-const DashboardTabs=()=> {
+const DashboardTabs = () => {
   const pathname = usePathname();
   const router = useRouter();
   const [dashboardTab, setDashboardTab] = useState('one');
@@ -54,23 +38,23 @@ const DashboardTabs=()=> {
   };
 
   return (
-<Tabs
-        value={dashboardTab}
-        onChange={handleChange}
-  textColor="inherit"
-        variant="fullWidth"
-  className={styles.tabs}
-        aria-label="pawlogs tabs"
-      >
-        {DashboardItems.map((dashboardItem) => (
-          <DashboardTabItem
-            key={dashboardItem.value}
-            value={dashboardItem.value}
-            label={dashboardItem.label}
-            className={styles.tab}
-          />
-        ))}
-        </Tabs>
+    <Tabs
+      value={dashboardTab}
+      onChange={handleChange}
+      textColor="inherit"
+      variant="fullWidth"
+      className={styles.tabs}
+      aria-label="pawlogs tabs"
+    >
+      {DashboardItems.map((dashboardItem) => (
+        <DashboardTabItem
+          key={dashboardItem.value}
+          value={dashboardItem.value}
+          label={dashboardItem.label}
+          className={styles.tab}
+        />
+      ))}
+    </Tabs>
   );
 }
-export default  DashboardTabs;
+export default DashboardTabs;
