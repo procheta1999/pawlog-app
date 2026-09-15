@@ -19,7 +19,7 @@ const style = {
   borderRadius: 2,
 };
 
-export default function Modal({ open, onClose, isForm=false, formSchema={} }) {
+export default function Modal({ open, onClose, isForm=false, formSchema={}, onSubmit=()=>{} }) {
   return (
     <MuiModal
       open={open}
@@ -28,7 +28,7 @@ export default function Modal({ open, onClose, isForm=false, formSchema={} }) {
       aria-describedby="modal-modal-description"
     >
       <Box sx={style}>
-        {isForm ? <Form schema={formSchema}/>: (<><Typography id="modal-modal-title" variant="h6" component="h2">
+        {isForm ? <Form schema={formSchema} onSubmitDetails={onSubmit}/>: (<><Typography id="modal-modal-title" variant="h6" component="h2">
                   Text in a modal
               </Typography><Typography id="modal-modal-description" sx={{ mt: 2 }}>
                       Duis mollis, est non commodo luctus, nisi erat porttitor ligula.

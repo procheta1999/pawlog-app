@@ -8,10 +8,9 @@ import Typography from '@mui/material/Typography';
 import styles from './ProfileCard.module.css';
 import actionStyles from './ActionCard.module.css';
 import { TitleHeader } from '../../components/ContentStyling';
-import { CardHeader, IconButton } from '@mui/material';
+import { CardHeader, CircularProgress, IconButton } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import ActionCard from './ActionCard';
-import { useProfile } from '../../../utils/ProfileContext';
 
 const stats = [
   {
@@ -61,20 +60,40 @@ const ProfileCardHeader=({openEditModalOp, nameOfPet, metadataOfPet})=>{
       />
     )
 }
-export default function ProfileCard({handleOpenEditModal, nameOfPet, metadataOfPet}) {
+export default function ProfileCard({handleOpenEditModal, nameOfPet, metadataOfPet, dataLoadingState}) {
     const openEditModalOp=()=>{
         handleOpenEditModal(true);
     }
   return (
-    <Card variant="outlined" className={styles.card}>
-      <ProfileCardHeader openEditModalOp={openEditModalOp} nameOfPet={nameOfPet} metadataOfPet={metadataOfPet}/>
-      <CardContent>
-        <Box className={actionStyles.cards}>
-          {stats.map((stat) => (
-            <ActionCard key={stat.label} card={stat} />
-          ))}
+    <Card
+      variant="outlined"
+      className={styles.card}
+      aria-busy={dataLoadingState}
+      sx={{ position: 'relative' }}
+    >
+      <Box sx={{ visibility: dataLoadingState ? 'hidden' : 'visible' }}>
+        <ProfileCardHeader openEditModalOp={openEditModalOp} nameOfPet={nameOfPet} metadataOfPet={metadataOfPet}/>
+        <CardContent>
+          <Box className={actionStyles.cards}>
+            {stats.map((stat) => (
+              <ActionCard key={stat.label} card={stat} />
+            ))}
+          </Box>
+        </CardContent>
+      </Box>
+      {dataLoadingState && (
+        <Box
+          sx={{
+            position: 'absolute',
+            inset: 0,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          <CircularProgress aria-label="Loading…" />
         </Box>
-      </CardContent>
+      )}
     </Card>
   );
 }

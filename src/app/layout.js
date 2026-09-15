@@ -21,7 +21,10 @@ export const appInfo = {
 };
 
 export default function RootLayout({ children }) {
-  const [profileData, setProfileData] = useState({ schema: [] });
+  const [profileData, setProfileData] = useState({
+    schema: [],
+    loading: true,
+  });
 
   async function getProfileData() {
     const response = await fetch('/api/profile', {
@@ -37,15 +40,15 @@ export default function RootLayout({ children }) {
 
   useEffect(() => {
     getProfileData()
-      .then((data) => setProfileData(data || { schema: [] }))
-      .catch(() => setProfileData({ schema: [] }));
+      .then((data) => setProfileData({ ...data, loading: false }))
+      .catch(() => setProfileData({ schema: [], loading: false }));
   }, []);
 
   return (
     <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`}>
       <body style={{ margin: '1rem' }}>
         <AppRouterCacheProvider>
-          <ProfileProvider profile={profileData}>{children}</ProfileProvider>
+          <ProfileProvider profile={profileData} setProfile={setProfileData}>{children}</ProfileProvider>
         </AppRouterCacheProvider>
       </body>
     </html>

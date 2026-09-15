@@ -1,18 +1,43 @@
 "use client";
 
-import { Box, TextField } from '@mui/material';
-import React from 'react';
+import { Box, Button, TextField } from '@mui/material';
+import React, { useState } from 'react';
 import { TitleHeader } from './ContentStyling';
+import { formMapping } from '@/app/utils/formMapping';
 
 export const fieldTypes={
     "INPUT":"input"
 };
-const Form=({schema})=>{
+const Form=({schema, onSubmitDetails})=>{
+    const [formSchema, setFormSchema] = useState(schema);
+    const [loading, setLoading]=useState(false);
+    const handleFieldChange = (field, value) => {
+        setFormSchema((currentSchema) => currentSchema.map((schemaItem) => (
+            schemaItem.field === field ? { ...schemaItem, value } : schemaItem
+        )));
+    };
+    const onSubmitClick=async ()=>{
+        setLoading(true);
+        try {
+            await onSubmitDetails(formSchema);
+        } finally {
+            setLoading(false);
+        }
+    }
+
     return(
         <>
         <TitleHeader variant="h6" content="Juno's details"/>
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-            {schema.map((schemaItem)=>(schemaItem.type===fieldTypes.INPUT ? <TextField id="outlined-basic" label={schemaItem.field} variant="outlined" value={schemaItem.value} key={schemaItem.field} fullWidth/> : null))}
+            {formSchema.map((schemaItem)=>(schemaItem.type===fieldTypes.INPUT ? <TextField id="outlined-basic" label={formMapping[schemaItem.field]} variant="outlined" value={schemaItem.value} onChange={(event) => handleFieldChange(schemaItem.field, event.target.value)} key={schemaItem.field} fullWidth/> : null))}
+            <Button
+                variant="contained"
+                onClick={onSubmitClick}
+                loading={loading}
+                loadingPosition="start"
+            >
+                Submit
+            </Button>
         </Box>
         </>
     )
