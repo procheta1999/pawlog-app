@@ -8,7 +8,8 @@ function isValidProfile(profile) {
   return typeof profile.petName === 'string'
     && typeof profile.petBreed === 'string'
     && typeof profile.petWeight === 'string'
-    && typeof profile.petAge === 'string';
+    && typeof profile.petAge === 'string'
+    && typeof profile.petParent === 'string';
 }
 
 export async function getProfileController() {
@@ -29,7 +30,7 @@ export async function updateProfileController(request) {
 
     if (!isValidProfile(body)) {
       return {
-        error: 'profile must include petName, petBreed, petWeight, and petAge as strings',
+        error: 'profile must include petName, petBreed, petWeight, petAge and petParent as strings',
         status: 400,
       };
     }

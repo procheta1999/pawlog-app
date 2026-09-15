@@ -42,7 +42,7 @@ export default function TodayPage() {
         <Grid container spacing={2} sx={{mt:5}}>
             <Grid size={{ xs: 12, md: 6 }}>
                 <ProfileCard handleOpenEditModal={handleOpenEditModal} nameOfPet={name} metadataOfPet={metadata} dataLoadingState={loading}/>
-                <EditFormModal openEditModal={openEditModal} handleCloseEditModal={handleCloseEditModal} formSchema={schema} onSubmit={updateProfile} title="Juno's details"/>
+                <EditFormModal openEditModal={openEditModal} handleCloseEditModal={handleCloseEditModal} formSchema={schema} onSubmit={updateProfile} title={`${name || 'Your pet'}'s details`}/>
             </Grid>
             <Grid size={{ xs: 12, md: 6 }}>
                 <TimelineCard />

@@ -5,6 +5,7 @@ const petProfileSchema = new mongoose.Schema({
   petBreed: { type: String, default: '' },
   petWeight: { type: String, default: '' },
   petAge: { type: String, default: '' },
+  petParent:{ type: String, default: ''}
 });
 
 const PetProfile =

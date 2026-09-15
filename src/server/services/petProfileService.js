@@ -3,6 +3,7 @@ import connectDB from '../config/db';
 
 function formatProfileData(profile) {
   const profileDetails = profile || {
+    petParent: '',
     petName: '',
     petBreed: '',
     petWeight: '',
@@ -11,24 +12,34 @@ function formatProfileData(profile) {
 
   return [
     {
+      field: 'petParent',
+      value: profileDetails.petParent || '',
+      type: 'input',
+      disabled:true,
+    },
+    {
       field: 'petName',
       value: profileDetails.petName || '',
       type: 'input',
+      disabled:false
     },
     {
       field: 'petBreed',
       value: profileDetails.petBreed || '',
       type: 'input',
+      disabled:false
     },
     {
       field: 'petWeight',
       value: profileDetails.petWeight || '',
       type: 'input',
+      disabled: false
     },
     {
       field: 'petAge',
       value: profileDetails.petAge || '',
       type: 'input',
+      disabled:false
     },
   ];
 }
@@ -53,6 +64,7 @@ export async function updateProfile(profileData) {
       petBreed: profileData.petBreed || '',
       petWeight: profileData.petWeight || '',
       petAge: profileData.petAge || '',
+      petParent: profileData.petParent || ''
     },
     {
       upsert: true,

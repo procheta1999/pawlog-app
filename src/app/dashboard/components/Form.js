@@ -27,7 +27,7 @@ const Form = ({ schema, onSubmitDetails, formTitle }) => {
         <>
             <TitleHeader variant="h6" content={formTitle} />
             <Box className={styles.fields}>
-                {formSchema.map((schemaItem) => (schemaItem.type === fieldTypes.INPUT ? <TextField id="outlined-basic" label={formMapping[schemaItem.field]} variant="outlined" value={schemaItem.value} onChange={(event) => handleFieldChange(schemaItem.field, event.target.value)} key={schemaItem.field} fullWidth /> : null))}
+                {formSchema.map((schemaItem) => (schemaItem.type === fieldTypes.INPUT ? <TextField id="outlined-basic" disabled={schemaItem.disabled} label={formMapping[schemaItem.field]} variant="outlined" value={schemaItem.value} onChange={(event) => handleFieldChange(schemaItem.field, event.target.value)} key={schemaItem.field} fullWidth /> : null))}
                 <Button
                     variant="contained"
                     onClick={onSubmitClick}

@@ -12,6 +12,7 @@ export function ProfileProvider({ children, profile, setProfile }) {
     schema,
     loading,
     setProfile,
+    petParent:getFieldValue('petParent'),
     name: getFieldValue('petName'),
     metadata: `${getFieldValue('petBreed')} • ${getFieldValue('petAge')} • ${getFieldValue('petWeight')} kg`,
   };
