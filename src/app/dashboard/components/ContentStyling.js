@@ -1,9 +1,9 @@
 import { Typography } from '@mui/material';
 import styles from './ContentStyling.module.css';
 
-export const TitleHeader=({ variant, className = styles.title, content, sx={} })=> {
+export const TitleHeader=({ variant, className = styles.title, content, sx={}, ...props })=> {
   return (
-    <Typography variant={variant} noWrap component="div" className={className} sx={sx}>
+    <Typography variant={variant} noWrap component="div" className={className} sx={sx} {...props}>
       {content}
     </Typography>
   );
