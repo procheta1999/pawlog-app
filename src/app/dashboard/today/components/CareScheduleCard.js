@@ -1,0 +1,58 @@
+import Box from '@mui/material/Box';
+import Card from '@mui/material/Card';
+import CardActions from '@mui/material/CardActions';
+import CardContent from '@mui/material/CardContent';
+import Typography from '@mui/material/Typography';
+import DashboardButton from '../../components/DashboardButton';
+import EventIcon from '@mui/icons-material/Event';
+import MedicationIcon from '@mui/icons-material/Medication';
+import RestaurantIcon from '@mui/icons-material/Restaurant';
+import DirectionsWalkIcon from '@mui/icons-material/DirectionsWalk';
+import dayjs from 'dayjs';
+import Timeline from '../../components/Timeline';
+
+const eventIcons = {
+    meal: RestaurantIcon,
+    walk: DirectionsWalkIcon,
+    medication: MedicationIcon,
+};
+
+function formatEventType(eventType) {
+    return eventType.replaceAll('_', ' ').replace(/\b\w/g, (character) => character.toUpperCase());
+}
+
+export default function CareScheduleCard({ handleOpenCareScheduleModal, careSchedules = [] }) {
+    const handleOpenModal = () => {
+        handleOpenCareScheduleModal(true);
+    };
+    const timelineItems = careSchedules.map((schedule) => ({
+        time: dayjs(schedule.eventTime).format('HH:mm'),
+        title: schedule.description || formatEventType(schedule.eventType),
+        description: schedule.notes || formatEventType(schedule.eventType),
+        status: 'Scheduled',
+        statusClass: 'scheduled',
+        icon: eventIcons[schedule.eventType] || EventIcon,
+    }));
+
+    return (
+        <Card sx={{ minWidth: 275 }}>
+            <CardContent>
+                <Typography variant="h5" component="div">
+                    What&apos;s your pet&apos;s care schedule?
+                </Typography>
+                <Typography sx={{ color: 'text.secondary', mb: 1.5 }}>Before setting up care events, we want to know the care schedule of your pet which will help us setup the care timeline better</Typography>
+                <Typography variant="body2">
+                    Please make sure your pet&apos;s stomach is not empty for more than 6-7 hours because that might lead to gastristis. Please consult your vet for further details.
+                </Typography>
+                {timelineItems.length > 0 && <Timeline items={timelineItems} />}
+            </CardContent>
+            <CardActions>
+                <DashboardButton
+                    onClick={handleOpenModal}
+                >
+                    Record care schedule
+                </DashboardButton>
+            </CardActions>
+        </Card>
+    );
+}
