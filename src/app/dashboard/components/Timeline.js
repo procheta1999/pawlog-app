@@ -1,13 +1,12 @@
-import MoreVertIcon from '@mui/icons-material/MoreVert';
 import Box from '@mui/material/Box';
 import Chip from '@mui/material/Chip';
-import IconButton from '@mui/material/IconButton';
 import Step from '@mui/material/Step';
 import StepContent from '@mui/material/StepContent';
 import StepLabel from '@mui/material/StepLabel';
 import Stepper from '@mui/material/Stepper';
 import Typography from '@mui/material/Typography';
 import styles from "./Timeline.module.css";
+import CareEventMenu from './CareEventMenu';
 
 const statusChipColors = {
   confirmed: { bgcolor: '#eaf8f1', color: '#208451' },
@@ -26,7 +25,18 @@ function TimelineStepIcon({ item }) {
   );
 }
 
-export default function Timeline({ items = [] }) {
+export default function Timeline({
+  items = [],
+  onEventMenuAction = () => { },
+  eventMenuItems = [
+    { label: 'Edit event', value: 'edit' },
+    { label: 'Delete event', value: 'delete' },
+  ],
+}) {
+  const handleMenuAction = (item) => (action) => {
+    onEventMenuAction(item.sourceEvent || item, action);
+  };
+
   return (
     <Stepper
       orientation="vertical"
@@ -46,15 +56,24 @@ export default function Timeline({ items = [] }) {
             </Box>
           </StepLabel>
           <StepContent>
-            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 1, width: '100%' }}>
-              <Typography sx={{ ml: 2 }}>{item.description}</Typography>
-              <Chip
-                component="span"
-                label={item.status}
-                size="small"
-                className={`${styles.status} ${styles[item.statusClass]}`}
-                sx={statusChipColors[item.statusClass]}
-              />
+            <Box className={styles.eventContent}>
+              <Typography sx={{ ml: 2, minWidth: 0 }}>{item.description}</Typography>
+              <Box className={styles.eventActions}>
+                <Chip
+                  component="span"
+                  label={item.status}
+                  size="small"
+                  className={`${styles.status} ${styles[item.statusClass]}`}
+                  sx={statusChipColors[item.statusClass]}
+                />
+                {onEventMenuAction && (
+                  <CareEventMenu
+                    ariaLabel={`More options for ${item.title}`}
+                    items={eventMenuItems}
+                    onAction={handleMenuAction(item)}
+                  />
+                )}
+              </Box>
             </Box>
           </StepContent>
         </Step>

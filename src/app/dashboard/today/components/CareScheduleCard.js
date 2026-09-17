@@ -21,11 +21,18 @@ function formatEventType(eventType) {
     return eventType.replaceAll('_', ' ').replace(/\b\w/g, (character) => character.toUpperCase());
 }
 
-export default function CareScheduleCard({ handleOpenCareScheduleModal, careSchedules = [] }) {
+export default function CareScheduleCard({
+    handleOpenCareScheduleModal,
+    careSchedules = [],
+    onEventMenuAction = () => {},
+}) {
     const handleOpenModal = () => {
         handleOpenCareScheduleModal(true);
     };
     const timelineItems = careSchedules.map((schedule) => ({
+        ...schedule,
+        sourceEvent: schedule,
+        id: schedule.id,
         time: dayjs(schedule.eventTime).format('HH:mm'),
         title: schedule.description || formatEventType(schedule.eventType),
         description: schedule.notes || formatEventType(schedule.eventType),
@@ -41,10 +48,12 @@ export default function CareScheduleCard({ handleOpenCareScheduleModal, careSche
                     What&apos;s your pet&apos;s care schedule?
                 </Typography>
                 <Typography sx={{ color: 'text.secondary', mb: 1.5 }}>Before setting up care events, we want to know the care schedule of your pet which will help us setup the care timeline better</Typography>
-                <Typography variant="body2">
-                    Please make sure your pet&apos;s stomach is not empty for more than 6-7 hours because that might lead to gastristis. Please consult your vet for further details.
+                <Typography variant="body2" sx={{mb:2}}>
+                    Please make sure your pet&apos;s stomach is not empty for more than 6-7 hours because that might lead to gastristis. Please consult the vet for further details.
                 </Typography>
-                {timelineItems.length > 0 && <Timeline items={timelineItems} />}
+                {timelineItems.length > 0 && (
+                    <Timeline items={timelineItems} onEventMenuAction={onEventMenuAction} />
+                )}
             </CardContent>
             <CardActions>
                 <DashboardButton

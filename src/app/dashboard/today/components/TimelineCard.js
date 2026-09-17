@@ -1,5 +1,7 @@
 import RestaurantIcon from '@mui/icons-material/Restaurant';
 import DirectionsWalkIcon from '@mui/icons-material/DirectionsWalk';
+import MedicationIcon from '@mui/icons-material/Medication';
+import EventIcon from '@mui/icons-material/Event';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import Typography from '@mui/material/Typography';
@@ -7,49 +9,56 @@ import styles from './TimelineCard.module.css';
 import DashboardButton from '../../components/DashboardButton';
 import Timeline from '../../components/Timeline';
 
-const timelineItems = [
-  {
-    time: '09:00',
-    title: 'Breakfast',
-    description: 'Ate normally',
-    status: 'Confirmed',
-    statusClass: 'confirmed',
-    type: "meal",
-    icon: RestaurantIcon,
-  },
-  {
-    time: '11:30',
-    title: 'Morning walk',
-    description: 'About 30 minutes',
-    status: 'Approximate',
-    statusClass: 'approximate',
-    type: "activity",
-    icon: DirectionsWalkIcon,
-  },
-  {
-    time: '14:00',
-    title: 'Lunch',
-    description: 'Needs confirmation',
-    status: 'Needs review',
-    statusClass: 'needsReview',
-    type: "meal",
-    icon: RestaurantIcon,
-  },
-  {
-    time: '18:00',
-    title: 'Dinner',
-    description: 'Scheduled',
-    status: 'Scheduled',
-    statusClass: 'scheduled',
-    type: "meal",
-    icon: RestaurantIcon,
-  },
-];
+const eventIcons = {
+  meal: RestaurantIcon,
+  walk: DirectionsWalkIcon,
+  medication: MedicationIcon,
+};
 
-export default function TimelineCard({ handleOpenCareModal }) {
+const statusDetails = {
+  confirmed: { label: 'Confirmed', className: 'confirmed' },
+  partial: { label: 'Approximate', className: 'approximate' },
+  in_review: { label: 'In Review', className: 'needsReview' },
+  scheduled: { label: 'Scheduled', className: 'scheduled' },
+};
+
+function formatEventType(eventType) {
+  return eventType.replaceAll('_', ' ').replace(/\b\w/g, (character) => character.toUpperCase());
+}
+
+function getTimelineItems(careEvents) {
+  return careEvents.map((event) => {
+    const status = statusDetails[event.status] || {
+      label: formatEventType(event.status),
+      className: 'needsReview',
+    };
+
+    return {
+      ...event,
+      sourceEvent: event,
+      time: new Date(event.eventTime).toLocaleTimeString([], {
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false,
+      }),
+      title: event.description || formatEventType(event.eventType),
+      description: event.quantityDetails || event.notes || formatEventType(event.eventType),
+      status: status.label,
+      statusClass: status.className,
+      icon: eventIcons[event.eventType] || EventIcon,
+    };
+  });
+}
+
+export default function TimelineCard({
+  handleOpenCareModal,
+  careEvents = [],
+  onEventMenuAction=()=>{},
+}) {
   const handleOpenModal = () => {
     handleOpenCareModal(true);
   };
+  const timelineItems = getTimelineItems(careEvents);
 
   return (
     <Card variant="outlined" className={styles.card} sx={{ p: { xs: 1, md: 2 } }}>
@@ -64,7 +73,11 @@ export default function TimelineCard({ handleOpenCareModal }) {
         </DashboardButton>
       </Box>
 
-      <Timeline items={timelineItems} />
+      <Timeline
+        items={timelineItems}
+        onEventMenuAction={onEventMenuAction}
+        eventMenuItems={[{ label: 'Edit event', value: 'edit' }]}
+      />
     </Card>
   );
 }

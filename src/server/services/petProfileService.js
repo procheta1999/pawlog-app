@@ -1,6 +1,20 @@
 import PetProfile from '../model/petProfileModel';
 import connectDB from '../config/db';
 
+export async function getCurrentPetId(
+  errorMessage = 'A pet profile is required before continuing',
+) {
+  const profile = await PetProfile.findOne().select('_id').lean();
+
+  if (!profile) {
+    const error = new Error(errorMessage);
+    error.status = 404;
+    throw error;
+  }
+
+  return profile._id;
+}
+
 function formatProfileData(profile) {
   const profileDetails = profile || {
     petParent: '',

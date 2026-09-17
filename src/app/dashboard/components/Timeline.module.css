@@ -61,6 +61,21 @@
   margin-left: 1rem;
 }
 
+.eventContent {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.eventActions {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 0.5rem;
+  margin-left: auto;
+}
+
 .stepContent {
   margin-top: -42px;
   margin-left: 21px;

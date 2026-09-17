@@ -8,10 +8,5 @@ export const DashboardItems=[
     label:"Timeline",
     value:"two",
     route:"/dashboard/timeline"
-  },
-  {
-    label:"Care Plans",
-    value:"three",
-    route:"/dashboard/carePlans"
   }
 ];

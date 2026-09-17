@@ -1,31 +1,13 @@
-import { NextResponse } from 'next/server';
 import {
   getProfileController,
   updateProfileController,
 } from '../../../server/controller/petProfileController';
+import { responseHandler } from '../responseHandler';
 
 export async function GET() {
-  const result = await getProfileController();
-
-  if (result.error) {
-    return NextResponse.json(
-      { error: result.error },
-      { status: result.status },
-    );
-  }
-
-  return NextResponse.json(result.data, { status: result.status });
+  return responseHandler(await getProfileController());
 }
 
 export async function PUT(request) {
-  const result = await updateProfileController(request);
-
-  if (result.error) {
-    return NextResponse.json(
-      { error: result.error },
-      { status: result.status },
-    );
-  }
-
-  return NextResponse.json(result.data, { status: result.status });
+  return responseHandler(await updateProfileController(request));
 }

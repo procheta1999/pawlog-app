@@ -6,7 +6,6 @@ export const CARE_EVENT_TYPES = [
     "sleep",
     "grooming",
     "vet_visit",
-    "weight",
     "other",
 ];
 export const TIME_PRECISIONS = [
@@ -19,6 +18,7 @@ export const TIME_PRECISIONS = [
 export const CARE_EVENT_STATUSES = [
     "confirmed",
     "partial",
+    "in_review",
     "scheduled",
     "missed",
     "unknown",
@@ -40,9 +40,9 @@ export const careSchema = [
     { field: 'quantityDetails', value: '', type: 'input', catergory: 'input' },
     { field: 'notes', value: '', type: 'input', category: 'input' },
 ];
-export const careSchedule = [
+export const careScheduleSchema = [
     { field: 'eventType', value: 'meal', type: 'dropdown', category: 'event' },
     { field: 'description', value: '', type: 'input', category: 'input' },
     { field: 'eventTime', value: '', type: 'timePicker', category: 'time' },
     { field: 'notes', value: '', type: 'input', category: 'input' },
-]
+];
