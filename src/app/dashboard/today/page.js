@@ -69,11 +69,11 @@ export default function TodayPage() {
     };
     return (
         <Grid container spacing={2} sx={{ mt: 5 }}>
-            <Grid size={{ xs: 12, md: 6 }}>
-                <ProfileCard handleOpenEditModal={handleOpenEditModal} nameOfPet={name} metadataOfPet={metadata} dataLoadingState={loading} />
-                <EditFormModal openEditModal={openEditModal} handleCloseEditModal={handleCloseEditModal} formSchema={schema} onSubmit={updateProfile} title={`${name || 'Your pet'}'s details`} />
-            </Grid>
             <Grid container direction="column" spacing={2} size={{ xs: 12, md: 6 }}>
+                <Grid size={12}>
+                    <ProfileCard handleOpenEditModal={handleOpenEditModal} nameOfPet={name} metadataOfPet={metadata} dataLoadingState={loading} />
+                    <EditFormModal openEditModal={openEditModal} handleCloseEditModal={handleCloseEditModal} formSchema={schema} onSubmit={updateProfile} title={`${name || 'Your pet'}'s details`} />
+                </Grid>
                 <Grid size={12}>
                     <CareScheduleCard
                         handleOpenCareScheduleModal={handleOpenCareScheduleModal}
@@ -81,9 +81,9 @@ export default function TodayPage() {
                     />
                     <EditFormModal openEditModal={openCareScheduleModal} handleCloseEditModal={handleCloseCareScheduleModal} formSchema={careSchedule} onSubmit={saveCareSchedule} title={`${name || 'Your pet'}'s care schedule`} />
                 </Grid>
-                <Grid size={12}>
-                    <TimelineCard handleOpenCareModal={handleOpenCareModal} />
-                </Grid>
+            </Grid>
+            <Grid size={{ xs: 12, md: 6 }}>
+                <TimelineCard handleOpenCareModal={handleOpenCareModal} />
                 <EditFormModal openEditModal={openCareModal} handleCloseEditModal={handleCloseCareModal} formSchema={careSchema} onSubmit={updateProfile} title="Record Care Event" />
             </Grid>
         </Grid>
