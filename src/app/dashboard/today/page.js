@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import dayjs from 'dayjs';
 import Grid from '@mui/material/Grid';
 import ProfileCard from "./components/ProfileCard";
@@ -67,7 +67,18 @@ export default function TodayPage() {
 
         return response.json();
     };
-    const getCareEvents = async () => {
+    const getCareEventsStatusCounts = useCallback(async () => {
+        const response = await fetch('/api/care-events/status-counts', {
+            cache: 'no-store',
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to fetch care event status counts');
+        }
+
+        setEventsCount(await response.json());
+    }, [setEventsCount]);
+    const getCareEvents = useCallback(async () => {
         const response = await fetch('/api/care-events', {
             cache: 'no-store',
         });
@@ -76,8 +87,11 @@ export default function TodayPage() {
             throw new Error('Failed to fetch care events');
         }
 
-        return response.json();
-    };
+        const events = await response.json();
+        await getCareEventsStatusCounts();
+
+        return events;
+    }, [getCareEventsStatusCounts]);
     useEffect(() => {
         getCareSchedules()
             .then(setCareSchedules)
@@ -85,7 +99,7 @@ export default function TodayPage() {
         getCareEvents()
             .then(setCareEvents)
             .catch(() => setCareEvents([]));
-    }, []);
+    }, [getCareEvents]);
     const updateProfile = async (updatedSchema) => {
         const profileData = updatedSchema.reduce((profile, field) => ({
             ...profile,
@@ -233,30 +247,13 @@ export default function TodayPage() {
                 new Date(firstEvent.eventTime) - new Date(secondEvent.eventTime)
             ));
         });
+        await getCareEventsStatusCounts();
         handleCloseCareModal();
     };
-    const deleteCareEvent = async (event) => {
-        const response = await fetch(`/api/care-events?id=${encodeURIComponent(event.id)}`, {
-            method: 'DELETE',
-        });
-
-        if (!response.ok) {
-            throw new Error('Failed to delete care event');
-        }
-
-        const deletedEvent = await response.json();
-        setCareEvents((currentEvents) => (
-            currentEvents.filter((currentEvent) => currentEvent.id !== deletedEvent.id)
-        ));
-    };
-    const handleCareEventMenuAction = async (event, action) => {
+    const handleCareEventMenuAction = (event, action) => {
         if (action === 'edit') {
             setEditingCareEvent(event);
             handleOpenCareModal(true);
-        }
-
-        if (action === 'delete') {
-            await deleteCareEvent(event);
         }
     };
     const careScheduleFormSchema = editingCareSchedule
