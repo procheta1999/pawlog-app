@@ -1,7 +1,7 @@
 import { Typography } from '@mui/material';
 import styles from './ContentStyling.module.css';
 
-export const TitleHeader=({ variant, className = styles.title, content, sx={}, ...props })=> {
+export const TitleHeader = ({ variant, className = styles.title, content, sx = {}, ...props }) => {
   return (
     <Typography variant={variant} noWrap component="div" className={className} sx={sx} {...props}>
       {content}
@@ -9,7 +9,7 @@ export const TitleHeader=({ variant, className = styles.title, content, sx={}, .
   );
 }
 
-export const SubtitleHeader=({ variant = 'caption', className = styles.subtitle, content })=> {
+export const SubtitleHeader = ({ variant = 'caption', className = styles.subtitle, content }) => {
   return (
     <Typography variant={variant} noWrap component="div" className={className}>
       {content}

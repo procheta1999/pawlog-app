@@ -15,23 +15,23 @@ export default function CareEventMenu({
   const buttonId = `${id}-button`;
   const menuId = `${id}-menu`;
   const [anchorEl, setAnchorEl] = useState(null);
-  const open = Boolean(anchorEl);
+  const openMenu = Boolean(anchorEl);
 
-  const handleOpen = (event) => {
+  const handleOpenMenu = (event) => {
     setAnchorEl(event.currentTarget);
   };
 
-  const handleClose = () => {
+  const handleCloseMenu = () => {
     setAnchorEl(null);
   };
 
-  const handleAction = (action) => {
+  const handleMenuAction = (action) => {
     onAction?.(action);
-    handleClose();
+    handleCloseMenu();
   };
 
   const handleMenuItemClick = (action) => () => {
-    handleAction(action);
+    handleMenuAction(action);
   };
 
   return (
@@ -39,19 +39,19 @@ export default function CareEventMenu({
       <IconButton
         id={buttonId}
         aria-label={ariaLabel}
-        aria-controls={open ? menuId : undefined}
+        aria-controls={openMenu ? menuId : undefined}
         aria-haspopup="true"
-        aria-expanded={open ? 'true' : undefined}
+        aria-expanded={openMenu ? 'true' : undefined}
         size="small"
-        onClick={handleOpen}
+        onClick={handleOpenMenu}
       >
         <MoreVertIcon />
       </IconButton>
       <Menu
         id={menuId}
         anchorEl={anchorEl}
-        open={open}
-        onClose={handleClose}
+        open={openMenu}
+        onClose={handleCloseMenu}
         slotProps={{
           list: {
             'aria-labelledby': buttonId,
@@ -61,7 +61,7 @@ export default function CareEventMenu({
         {items.map((item) => (
           <MenuItem
             key={item.value}
-            disabled={item.disabled}
+            disabled={item?.disabled || false}
             onClick={handleMenuItemClick(item.value)}
           >
             {item.label}

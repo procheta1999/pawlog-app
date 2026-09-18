@@ -11,6 +11,18 @@ import RadioGroup from './RadioGroup';
 import TodayDatePicker from '../today/components/DatePicker';
 import TodayTimePicker from '../today/components/TimePicker';
 
+function isFieldValueFilled(value) {
+    if (typeof value === 'string') {
+        return value.trim().length > 0;
+    }
+
+    if (value?.isValid) {
+        return value.isValid();
+    }
+
+    return Boolean(value);
+}
+
 const Form = ({ schema, onSubmitDetails }) => {
     const [formSchema, setFormSchema] = useState(() => schema.map((schemaItem) => {
         if ([fieldTypes.DATEPICKER, fieldTypes.TIMEPICKER].includes(schemaItem.type) && !schemaItem.value) {
@@ -44,10 +56,13 @@ const Form = ({ schema, onSubmitDetails }) => {
             setLoading(false);
         }
     }
+    const isSubmitDisabled = loading || formSchema.some((schemaItem) => (
+        schemaItem.required && !isFieldValueFilled(schemaItem.value)
+    ));
     const renderComponent = (schemaItem) => {
         switch (schemaItem.type) {
             case fieldTypes.INPUT:
-                return (<TextField id="outlined-basic" disabled={schemaItem.disabled} label={formMapping[schemaItem.field]} variant="outlined" value={schemaItem.value} onChange={handleInputChange(schemaItem.field)} key={schemaItem.field} fullWidth />)
+                return (<TextField id="outlined-basic" disabled={schemaItem.disabled} required={schemaItem.required} label={formMapping[schemaItem.field]} variant="outlined" value={schemaItem.value} onChange={handleInputChange(schemaItem.field)} key={schemaItem.field} fullWidth />)
             case fieldTypes.DROPDOWN:
                 return (
                     <Dropdown
@@ -106,6 +121,7 @@ const Form = ({ schema, onSubmitDetails }) => {
                 <Button
                     variant="contained"
                     onClick={onSubmitClick}
+                    disabled={isSubmitDisabled}
                     loading={loading}
                     loadingPosition="start"
                 >
