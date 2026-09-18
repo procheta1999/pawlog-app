@@ -11,7 +11,7 @@ const petCareEventsScheduleSchema = new mongoose.Schema(
     petCareScheduleId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'PetCareSchedule',
-      default: null,
+      default: undefined,
     },
     date: { type: Date, required: true, index: true },
     eventType: { type: String, required: true },
