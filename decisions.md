@@ -128,13 +128,12 @@ There is no merge-field-by-field interface or persisted conflict relationship ye
 
 **Decision**
 
-Build shared dashboard components and use the same form schema for profile, schedule, and care-event forms. Extend the shared `Modal` to render either a form or custom children; extend the shared `RadioGroup` to render structured option labels for conflict choices.
+Build shared dashboard components and use the same form component structure for profile, schedule, and care-event forms. Extend the shared `Modal` to render either a form or custom children; extend the shared `RadioGroup` to render structured option labels for conflict choices.
 
 **Alternatives considered**
 
 - Duplicate a bespoke modal and radio implementation for conflicts.
 - Use one oversized generic component that owns all dashboard state.
-- Keep all styling in inline MUI `sx` props.
 
 **Reasoning**
 
