@@ -29,31 +29,36 @@ function formatProfileData(profile) {
       field: 'petParent',
       value: profileDetails.petParent || '',
       type: 'input',
-      disabled:true,
+      disabled: true,
+      required: true,
     },
     {
       field: 'petName',
       value: profileDetails.petName || '',
       type: 'input',
-      disabled:false
+      disabled: false,
+      required: true,
     },
     {
       field: 'petBreed',
       value: profileDetails.petBreed || '',
       type: 'input',
-      disabled:false
+      disabled: false,
+      required: true,
     },
     {
       field: 'petWeight',
       value: profileDetails.petWeight || '',
       type: 'input',
-      disabled: false
+      disabled: false,
+      required: true,
     },
     {
       field: 'petAge',
       value: profileDetails.petAge || '',
       type: 'input',
-      disabled:false
+      disabled: false,
+      required: true,
     },
   ];
 }

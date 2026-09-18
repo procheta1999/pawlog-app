@@ -161,12 +161,12 @@ export async function updateCareEvent(event) {
   await connectDB();
 
   const petId = await getCurrentPetId('A pet profile is required before managing care events');
-  const id = event.id || event._id;
+  const eventId = event.id || event._id;
   const data = getEventData(event);
 
-  if (id) {
+  if (eventId) {
     const updated = await PetCareEventsSchedule.findOneAndUpdate(
-      { _id: id, petId },
+      { _id: eventId, petId },
       {
         $set: data,
         $inc: { changeCount: 1 },
