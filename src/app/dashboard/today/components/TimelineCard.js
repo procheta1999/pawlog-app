@@ -7,6 +7,7 @@ import Card from '@mui/material/Card';
 import Typography from '@mui/material/Typography';
 import styles from './TimelineCard.module.css';
 import DashboardButton from '../../components/DashboardButton';
+import DashboardLoader from '../../components/DashboardLoader';
 import Timeline from '../../components/Timeline';
 import { getCareEventTimelineItems } from '@/app/utils/eventUtils';
 
@@ -26,6 +27,7 @@ const statusDetails = {
 export default function TimelineCard({
   handleOpenCareModal,
   careEvents = [],
+  dataLoadingState = false,
   onEventMenuAction = () => { },
 }) {
   const handleOpenModal = () => {
@@ -39,23 +41,31 @@ export default function TimelineCard({
   );
 
   return (
-    <Card variant="outlined" className={styles.card} sx={{ p: { xs: 1, md: 2 } }}>
-      <Box className={styles.header}>
-        <Typography variant="h5" className={styles.title}>
-          Today&apos;s Timeline
-        </Typography>
-        <DashboardButton
-          onClick={handleOpenModal}
-        >
-          Record care event
-        </DashboardButton>
-      </Box>
+    <Card
+      variant="outlined"
+      className={styles.card}
+      aria-busy={dataLoadingState}
+      sx={{ p: { xs: 1, md: 2 }, position: 'relative' }}
+    >
+      <Box sx={{ visibility: dataLoadingState ? 'hidden' : 'visible' }}>
+        <Box className={styles.header}>
+          <Typography variant="h5" className={styles.title}>
+            Today&apos;s Timeline
+          </Typography>
+          <DashboardButton
+            onClick={handleOpenModal}
+          >
+            Record care event
+          </DashboardButton>
+        </Box>
 
-      <Timeline
-        items={timelineItems}
-        onEventMenuAction={onEventMenuAction}
-        eventMenuItems={[{ label: 'Edit event', value: 'edit' }]}
-      />
+        <Timeline
+          items={timelineItems}
+          onEventMenuAction={onEventMenuAction}
+          eventMenuItems={[{ label: 'Edit event', value: 'edit' }]}
+        />
+      </Box>
+      {dataLoadingState && <DashboardLoader />}
     </Card>
   );
 }

@@ -8,9 +8,10 @@ import Typography from '@mui/material/Typography';
 import styles from './ProfileCard.module.css';
 import actionStyles from './ActionCard.module.css';
 import { TitleHeader } from '../../components/ContentStyling';
-import { CardHeader, CircularProgress, IconButton } from '@mui/material';
+import { CardHeader, IconButton } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import ActionCard from './ActionCard';
+import DashboardLoader from '../../components/DashboardLoader';
 
 
 const ProfileCardHeader = ({ openEditModalOp, nameOfPet, metadataOfPet }) => {
@@ -64,19 +65,7 @@ export default function ProfileCard({ handleOpenEditModal, nameOfPet, metadataOf
           </Box>
         </CardContent>
       </Box>
-      {dataLoadingState && (
-        <Box
-          sx={{
-            position: 'absolute',
-            inset: 0,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
-        >
-          <CircularProgress aria-label="Loading…" />
-        </Box>
-      )}
+      {dataLoadingState && <DashboardLoader />}
     </Card>
   );
 }

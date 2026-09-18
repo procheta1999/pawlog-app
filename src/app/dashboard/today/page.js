@@ -22,8 +22,10 @@ export default function TodayPage() {
     const [openCareModal, setOpenCareModal] = useState(false);
     const [openCareScheduleModal, setOpenCareSchedule] = useState(false);
     const [careSchedules, setCareSchedules] = useState([]);
+    const [careSchedulesLoading, setCareSchedulesLoading] = useState(true);
     const [editingCareSchedule, setEditingCareSchedule] = useState(null);
     const [careEvents, setCareEvents] = useState([]);
+    const [careEventsLoading, setCareEventsLoading] = useState(true);
     const [editingCareEvent, setEditingCareEvent] = useState(null);
     const { schema, name, metadata, loading, setProfile } = useProfile();
     const { careEventsStats, setEventsCount } = useCareEvents();
@@ -66,10 +68,12 @@ export default function TodayPage() {
     useEffect(() => {
         getCareSchedules()
             .then(setCareSchedules)
-            .catch(() => setCareSchedules([]));
+            .catch(() => setCareSchedules([]))
+            .finally(() => setCareSchedulesLoading(false));
         getCareEvents()
             .then(setCareEvents)
-            .catch(() => setCareEvents([]));
+            .catch(() => setCareEvents([]))
+            .finally(() => setCareEventsLoading(false));
     }, [getCareEvents]);
     const updateProfile = async (updatedSchema) => {
         const profileData = updatedSchema.reduce((profile, field) => ({
@@ -238,6 +242,7 @@ export default function TodayPage() {
                     <CareScheduleCard
                         handleOpenCareScheduleModal={handleOpenCareScheduleModal}
                         careSchedules={careSchedules}
+                        dataLoadingState={careSchedulesLoading}
                         onEventMenuAction={handleCareScheduleMenuAction}
                     />
                     <EditFormModal key={editingCareSchedule?.id || 'new-care-schedule'} openEditModal={openCareScheduleModal} handleCloseEditModal={handleCloseCareScheduleModal} formSchema={careScheduleFormSchema} onSubmit={saveCareSchedule} title={`${name || 'Your pet'}'s care schedule`} />
@@ -247,6 +252,7 @@ export default function TodayPage() {
                 <TimelineCard
                     handleOpenCareModal={handleOpenCareModal}
                     careEvents={careEvents}
+                    dataLoadingState={careEventsLoading}
                     onEventMenuAction={handleCareEventMenuAction}
                 />
                 <EditFormModal key={editingCareEvent?.id || 'new-care-event'} openEditModal={openCareModal} handleCloseEditModal={handleCloseCareModal} formSchema={careEventFormSchema} onSubmit={saveCareEvent} title="Record Care Event" />

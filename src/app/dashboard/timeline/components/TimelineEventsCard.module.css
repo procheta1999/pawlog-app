@@ -1,0 +1,24 @@
+.eventsCard {
+  position: relative;
+  min-height: 24rem;
+}
+
+.eventsTitle {
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.emptyState {
+  display: flex;
+  min-height: 19rem;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  text-align: center;
+}
+
+@media (max-width: 600px) {
+  .emptyState {
+    min-height: 14rem;
+  }
+}

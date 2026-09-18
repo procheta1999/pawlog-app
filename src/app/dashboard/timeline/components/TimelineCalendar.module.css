@@ -1,0 +1,19 @@
+.calendarCard {
+  overflow: hidden;
+}
+
+.calendarCard :global(.MuiPickersLayout-root),
+.calendarCard :global(.MuiPickersLayout-contentWrapper) {
+  min-width: 0;
+  width: 100%;
+}
+
+.calendarCard :global(.MuiDateCalendar-root) {
+  width: 100%;
+  max-width: 20rem;
+  margin-inline: auto;
+}
+
+.calendarCard :global(.MuiPickersToolbar-root) {
+  display: none;
+}
