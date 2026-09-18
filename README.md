@@ -13,6 +13,7 @@ The application separates a pet's recurring care schedule from its date-specific
 - Recurring care schedules with event type, description, time, and notes.
 - Automatic creation of today's daily events from the saved care schedule when no events exist for today.
 - Manual recording and editing of daily care events.
+- Conflict resolution for repeatedly changed daily care events, with choices to keep the current record, replace it, or retain both records.
 - Care-event statuses including confirmed, partial, scheduled, in review, missed, unknown, and conflicted.
 - Time-certainty values including exact, approximate, date only, and unknown.
 - A Today dashboard with recorded, scheduled, and in-review counts.
@@ -71,7 +72,15 @@ A `petCareEventsSchedule` document stores:
 
 New daily events start with `changeCount: 0`. Updating an existing daily event increments that internal counter. It is not rendered in the UI.
 
-For schedule-derived events, the combination of `petId`, `date`, and `petCareScheduleId` is unique, preventing the same schedule entry from being generated twice for the same day.
+For schedule-derived events, the combination of `petId`, `date`, and `petCareScheduleId` is unique, preventing the same schedule entry from being generated twice for the same day. This is a partial unique index: it applies only to records with a `petCareScheduleId`, so multiple manually recorded events can exist for the same pet and date.
+
+### Conflict resolution
+
+When an existing daily event with `changeCount > 1` is edited from Today's timeline, PawLog shows a conflict-resolution modal after the normal edit form is submitted. The modal compares the current record (Record A) with the submitted changes (Record B):
+
+- **Keep Record A:** discard the submitted changes; no API update is made.
+- **Use Record B:** update the existing event with the submitted values.
+- **Keep both records:** create a new manual daily event from the submitted values while retaining the original event.
 
 ## Daily-event generation
 
@@ -148,7 +157,7 @@ npm run lint   # Run ESLint
 
 ## Current scope
 
-PawLog currently focuses on a single pet profile and its end-to-end daily-care workflow. Authentication, multi-pet support, multiple caregivers, notifications, attachments, conflict reconciliation, and automated tests are not yet implemented.
+PawLog currently focuses on a single pet profile and its end-to-end daily-care workflow. Authentication, multi-pet support, multiple caregivers, notifications, attachments, reconciliation history, and automated tests are not yet implemented.
 
 ## Possible next steps
 
@@ -157,5 +166,5 @@ PawLog currently focuses on a single pet profile and its end-to-end daily-care w
 - Better historical reporting and analytics
 - Event deletion controls in every applicable view
 - Veterinary records and document uploads
-- Conflict detection and reconciliation history
+- Conflict reconciliation history
 - Automated unit and integration tests
