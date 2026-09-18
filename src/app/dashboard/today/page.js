@@ -4,6 +4,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import Grid from '@mui/material/Grid';
 import ProfileCard from "./components/ProfileCard";
 import EditFormModal from './components/EditFormModal';
+import ConflictResolutionModal from './components/ConflictResolutionModal';
 import TimelineCard from './components/TimelineCard';
 import { useProfile } from '@/app/utils/ProfileContext';
 import {
@@ -27,6 +28,7 @@ export default function TodayPage() {
     const [careEvents, setCareEvents] = useState([]);
     const [careEventsLoading, setCareEventsLoading] = useState(true);
     const [editingCareEvent, setEditingCareEvent] = useState(null);
+    const [conflictingCareEvents, setConflictingCareEvents] = useState(null);
     const { schema, name, metadata, loading, setProfile } = useProfile();
     const { careEventsStats, setEventsCount } = useCareEvents();
     const getCareSchedules = async () => {
@@ -183,22 +185,13 @@ export default function TodayPage() {
             await deleteCareSchedule(schedule);
         }
     };
-    const saveCareEvent = async (eventSchema) => {
-        const event = eventSchema.reduce((entry, field) => ({
-            ...entry,
-            [field.field]: field.value,
-        }), {});
-
-        if (editingCareEvent) {
-            event.id = editingCareEvent.id;
-        }
-
+    const persistCareEvent = async (event, eventId) => {
         const response = await fetch('/api/care-events', {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(event),
+            body: JSON.stringify(eventId ? { ...event, id: eventId } : event),
         });
 
         if (!response.ok) {
@@ -217,7 +210,45 @@ export default function TodayPage() {
             return sortCareEventsByTime(events);
         });
         await getCareEventsStatusCounts();
+        return savedEvent;
+    };
+    const handleCloseConflictResolutionModal = () => {
+        setConflictingCareEvents(null);
+    };
+    const saveCareEvent = async (eventSchema) => {
+        const event = eventSchema.reduce((entry, field) => ({
+            ...entry,
+            [field.field]: field.value,
+        }), {});
+
+        const requiresConflictResolution = Number(editingCareEvent?.changeCount) > 0;
+
+        if (requiresConflictResolution) {
+            setConflictingCareEvents({ recordA: editingCareEvent, recordB: event });
+            handleCloseCareModal();
+            return;
+        }
+
+        await persistCareEvent(event, editingCareEvent?.id);
         handleCloseCareModal();
+    };
+    const handleConflictResolution = async (resolution) => {
+        if (!conflictingCareEvents) {
+            return;
+        }
+
+        if (resolution === 'recordB') {
+            await persistCareEvent(
+                conflictingCareEvents.recordB,
+                conflictingCareEvents.recordA.id,
+            );
+        }
+
+        if (resolution === 'keepBoth') {
+            await persistCareEvent(conflictingCareEvents.recordB);
+        }
+
+        handleCloseConflictResolutionModal();
     };
     const handleCareEventMenuAction = (event, action) => {
         if (action === 'edit') {
@@ -256,6 +287,13 @@ export default function TodayPage() {
                     onEventMenuAction={handleCareEventMenuAction}
                 />
                 <EditFormModal key={editingCareEvent?.id || 'new-care-event'} openEditModal={openCareModal} handleCloseEditModal={handleCloseCareModal} formSchema={careEventFormSchema} onSubmit={saveCareEvent} title="Record Care Event" />
+                <ConflictResolutionModal
+                    open={Boolean(conflictingCareEvents)}
+                    recordA={conflictingCareEvents?.recordA}
+                    recordB={conflictingCareEvents?.recordB}
+                    onClose={handleCloseConflictResolutionModal}
+                    onResolve={handleConflictResolution}
+                />
             </Grid>
         </Grid>
     );

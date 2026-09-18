@@ -28,7 +28,11 @@ const petCareEventsScheduleSchema = new mongoose.Schema(
 
 petCareEventsScheduleSchema.index(
   { petId: 1, date: 1, petCareScheduleId: 1 },
-  { unique: true, sparse: true },
+  {
+    name: 'uniqueScheduledEventPerDay',
+    unique: true,
+    partialFilterExpression: { petCareScheduleId: { $type: 'objectId' } },
+  },
 );
 
 const PetCareEventsSchedule =

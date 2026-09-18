@@ -2,7 +2,16 @@ import { Box, Modal as MuiModal, Typography } from '@mui/material';
 import Form from './Form';
 import styles from './Modal.module.css';
 
-export default function Modal({ open, onClose, isForm = false, formSchema = {}, onSubmit = () => { }, title = "" }) {
+export default function Modal({
+  open,
+  onClose,
+  isForm = false,
+  formSchema = {},
+  onSubmit = () => { },
+  title = "",
+  children,
+  contentClassName = '',
+}) {
   return (
     <MuiModal
       open={open}
@@ -10,7 +19,7 @@ export default function Modal({ open, onClose, isForm = false, formSchema = {}, 
       aria-labelledby="edit-modal-title"
       aria-describedby="edit-modal-description"
     >
-      <Box className={styles.modalContent}>
+      <Box className={`${styles.modalContent} ${contentClassName}`}>
         {isForm ? (
           <>
             <Typography id="edit-modal-title" variant="h6" component="h2" sx={{ fontWeight: 700 }}>
@@ -18,7 +27,7 @@ export default function Modal({ open, onClose, isForm = false, formSchema = {}, 
             </Typography>
             <Form schema={formSchema} onSubmitDetails={onSubmit} />
           </>
-        ) : null}
+        ) : children}
       </Box>
     </MuiModal>
   );

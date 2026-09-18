@@ -12,6 +12,14 @@ function formatOptionLabel(option) {
     .replace(/\b\w/g, (character) => character.toUpperCase());
 }
 
+function getOptionValue(option) {
+  return typeof option === 'string' ? option : option.value;
+}
+
+function getOptionLabel(option) {
+  return typeof option === 'string' ? formatOptionLabel(option) : option.label;
+}
+
 export default function RadioGroup({
   id,
   label,
@@ -19,27 +27,30 @@ export default function RadioGroup({
   onChange,
   options = [],
   disabled = false,
+  ariaLabel,
+  renderOptionLabel,
 }) {
-  const labelId = `${id}-label`;
+  const labelId = label ? `${id}-label` : undefined;
   const handleChange = (event) => {
     onChange(event.target.value);
   };
 
   return (
     <FormControl disabled={disabled}>
-      <FormLabel id={labelId}>{label}</FormLabel>
+      {label && <FormLabel id={labelId}>{label}</FormLabel>}
       <MuiRadioGroup
         aria-labelledby={labelId}
+        aria-label={ariaLabel}
         name={id}
         value={value}
         onChange={handleChange}
       >
         {options.map((option) => (
           <FormControlLabel
-            key={option}
-            value={option}
+            key={getOptionValue(option)}
+            value={getOptionValue(option)}
             control={<Radio />}
-            label={formatOptionLabel(option)}
+            label={renderOptionLabel ? renderOptionLabel(option) : getOptionLabel(option)}
           />
         ))}
       </MuiRadioGroup>
