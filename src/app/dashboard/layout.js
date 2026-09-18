@@ -1,7 +1,7 @@
 "use client";
 
 import Box from '@mui/material/Box';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { AppHeader } from './components/AppHeader';
 import DashboardTabs from './components/DashboardTabs';
 import { ProfileProvider } from '../utils/ProfileContext';
@@ -12,7 +12,7 @@ export default function DashboardLayout({ children }) {
     schema: [],
     loading: true,
   });
-  const [todayCareEventsCounts,setTodayCareEventsCounts]=useState({ recorded:0, scheduled:0, inReview:0 })
+  const [todayCareEventsCounts, setTodayCareEventsCounts] = useState({ recorded: 0, scheduled: 0, inReview: 0 })
 
   async function getProfileData() {
     const response = await fetch('/api/profile', {
@@ -25,7 +25,8 @@ export default function DashboardLayout({ children }) {
 
     return response.json();
   }
-async function getTodayCareEventsStatusCounts() {
+
+  async function getTodayCareEventsStatusCounts() {
     const response = await fetch('/api/care-events/status-counts', {
       cache: 'no-store',
     });
@@ -36,23 +37,24 @@ async function getTodayCareEventsStatusCounts() {
 
     return response.json();
   }
+
   useEffect(() => {
     getProfileData()
       .then((data) => setProfileData({ ...data, loading: false }))
       .catch(() => setProfileData({ schema: [], loading: false }));
     getTodayCareEventsStatusCounts()
-    .then((data)=> setTodayCareEventsCounts(data))
-    .catch(()=>setTodayCareEventsCounts({ recorded: 0, scheduled: 0, inReview: 0 }));
+      .then((data) => setTodayCareEventsCounts(data))
+      .catch(() => setTodayCareEventsCounts({ recorded: 0, scheduled: 0, inReview: 0 }));
   }, []);
 
   return (
     <ProfileProvider profile={profileData} setProfile={setProfileData}>
       <EventsProvider eventsCount={todayCareEventsCounts} setEventsCount={setTodayCareEventsCounts}>
-      <Box sx={{ width: '100%' }}>
-        <AppHeader title="PawLog" subtitle="Systematic care logs for your pet" />
-        <DashboardTabs />
-        <Box sx={{ margin: { xs: '1rem', md: '2rem' } }}>{children}</Box>
-      </Box>
+        <Box sx={{ width: '100%' }}>
+          <AppHeader title="PawLog" subtitle="Systematic care logs for your pet" />
+          <DashboardTabs />
+          <Box sx={{ margin: { xs: '1rem', md: '2rem' } }}>{children}</Box>
+        </Box>
       </EventsProvider>
     </ProfileProvider>
   );
