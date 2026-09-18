@@ -1,5 +1,6 @@
 import {
   deleteCareEvent,
+  getTodayCareEventStatusCounts,
   getTodayCareEvents,
   updateCareEvent,
 } from '../services/petCareEventsScheduleService';
@@ -18,6 +19,17 @@ export async function getCareEventsController() {
     return { data: await getTodayCareEvents(), status: 200 };
   } catch (error) {
     return { error: error.message || 'Failed to fetch care events', status: error.status || 500 };
+  }
+}
+
+export async function getCareEventStatusCountsController() {
+  try {
+    return { data: await getTodayCareEventStatusCounts(), status: 200 };
+  } catch (error) {
+    return {
+      error: error.message || 'Failed to fetch care event status counts',
+      status: error.status || 500,
+    };
   }
 }
 

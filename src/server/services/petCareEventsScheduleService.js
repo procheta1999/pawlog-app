@@ -72,6 +72,7 @@ function formatEvent(event) {
     eventTime: event.eventTime.toISOString(),
     timeCertainty: event.timeCertainty,
     status: event.status,
+    changeCount: event.changeCount ?? 0,
     quantityDetails: event.quantityDetails,
     notes: event.notes,
   };
@@ -92,11 +93,30 @@ async function createTodayCareEventsFromSchedule(petId, start, end) {
     petId,
     petCareScheduleId: schedule._id,
     date: start,
+    changeCount: 0,
     ...scheduleEventData(schedule, start),
   }));
 
   if (events.length) {
-    await PetCareEventsSchedule.insertMany(events, { ordered: false });
+    try {
+      await PetCareEventsSchedule.bulkWrite(
+        events.map((event) => ({
+          updateOne: {
+            filter: {
+              petId: event.petId,
+              date: event.date,
+              petCareScheduleId: event.petCareScheduleId,
+            },
+            update: { $setOnInsert: event },
+            upsert: true,
+          },
+        })),
+      );
+    } catch (error) {
+      if (error.code !== 11000) {
+        throw error;
+      }
+    }
   }
 }
 
@@ -115,6 +135,28 @@ export async function getTodayCareEvents() {
   return events.map(formatEvent);
 }
 
+export async function getTodayCareEventStatusCounts() {
+  await connectDB();
+
+  const petId = await getCurrentPetId('A pet profile is required before managing care events');
+  const { start, end } = getDayRange();
+  await createTodayCareEventsFromSchedule(petId, start, end);
+  const dateFilter = {
+    petId,
+    date: { $gte: start, $lt: end },
+  };
+  const [recorded, scheduled, inReview] = await Promise.all([
+    PetCareEventsSchedule.countDocuments({
+      ...dateFilter,
+      status: { $nin: ['scheduled', 'in_review', 'unknown'] },
+    }),
+    PetCareEventsSchedule.countDocuments({ ...dateFilter, status: 'scheduled' }),
+    PetCareEventsSchedule.countDocuments({ ...dateFilter, status: 'in_review' }),
+  ]);
+
+  return { recorded, scheduled, inReview };
+}
+
 export async function updateCareEvent(event) {
   await connectDB();
 
@@ -125,7 +167,10 @@ export async function updateCareEvent(event) {
   if (id) {
     const updated = await PetCareEventsSchedule.findOneAndUpdate(
       { _id: id, petId },
-      data,
+      {
+        $set: data,
+        $inc: { changeCount: 1 },
+      },
       { new: true, runValidators: true },
     ).lean();
 

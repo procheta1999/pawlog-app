@@ -12,23 +12,6 @@ import { CardHeader, CircularProgress, IconButton } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import ActionCard from './ActionCard';
 
-const stats = [
-  {
-    count: 3,
-    label: 'Recorded',
-    style: 'recorded',
-  },
-  {
-    count: 1,
-    label: 'Scheduled',
-    style: 'scheduled',
-  },
-  {
-    count: 1,
-    label: 'Needs review',
-    style: 'needsReview',
-  },
-];
 
 const ProfileCardHeader=({openEditModalOp, nameOfPet, metadataOfPet})=>{
 
@@ -60,7 +43,7 @@ const ProfileCardHeader=({openEditModalOp, nameOfPet, metadataOfPet})=>{
       />
     )
 }
-export default function ProfileCard({handleOpenEditModal, nameOfPet, metadataOfPet, dataLoadingState}) {
+export default function ProfileCard({handleOpenEditModal, nameOfPet, metadataOfPet, dataLoadingState, eventStats=[]}) {
     const openEditModalOp=()=>{
         handleOpenEditModal(true);
     }
@@ -75,8 +58,8 @@ export default function ProfileCard({handleOpenEditModal, nameOfPet, metadataOfP
         <ProfileCardHeader openEditModalOp={openEditModalOp} nameOfPet={nameOfPet} metadataOfPet={metadataOfPet}/>
         <CardContent>
           <Box className={actionStyles.cards}>
-            {stats.map((stat) => (
-              <ActionCard key={stat.label} card={stat} />
+            {eventStats.map((eventStat) => (
+              <ActionCard key={eventStat.label} card={eventStat} />
             ))}
           </Box>
         </CardContent>

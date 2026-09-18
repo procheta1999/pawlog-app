@@ -19,6 +19,7 @@ const petCareEventsScheduleSchema = new mongoose.Schema(
     eventTime: { type: Date, required: true },
     timeCertainty: { type: String, default: 'exact' },
     status: { type: String, default: 'scheduled' },
+    changeCount: { type: Number, default: 0 },
     quantityDetails: { type: String, default: '' },
     notes: { type: String, default: '' },
   },

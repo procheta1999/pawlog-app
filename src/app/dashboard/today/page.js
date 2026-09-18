@@ -9,8 +9,9 @@ import TimelineCard from './components/TimelineCard';
 import { useProfile } from '@/app/utils/ProfileContext';
 import { careScheduleSchema, careSchema } from '@/app/utils/eventUtils';
 import CareScheduleCard from './components/CareScheduleCard';
+import { useCareEvents } from '@/app/utils/EventsContext';
 
-function getCareScheduleFieldValue(field, careSchedule) {
+const getCareScheduleFieldValue=(field, careSchedule)=> {
     if (field.field === 'eventTime') {
         return dayjs(careSchedule.eventTime);
     }
@@ -18,14 +19,14 @@ function getCareScheduleFieldValue(field, careSchedule) {
     return careSchedule[field.field] ?? field.value;
 }
 
-function getCareScheduleFormSchema(careSchedule) {
+const getCareScheduleFormSchema=(careSchedule)=> {
     return careScheduleSchema.map((field) => ({
         ...field,
         value: getCareScheduleFieldValue(field, careSchedule),
     }));
 }
 
-function getCareEventFieldValue(field, careEvent) {
+const getCareEventFieldValue=(field, careEvent)=> {
     if (field.field === 'eventDate') {
         return dayjs(careEvent.eventDate);
     }
@@ -37,7 +38,7 @@ function getCareEventFieldValue(field, careEvent) {
     return careEvent[field.field] ?? field.value;
 }
 
-function getCareEventFormSchema(careEvent) {
+const getCareEventFormSchema=(careEvent)=> {
     return careSchema.map((field) => ({
         ...field,
         disabled: field.field === 'eventType' || field.disabled,
@@ -54,6 +55,7 @@ export default function TodayPage() {
     const [careEvents, setCareEvents] = useState([]);
     const [editingCareEvent, setEditingCareEvent] = useState(null);
     const { schema, name, metadata, loading, setProfile } = useProfile();
+    const {careEventsStats, setEventsCount} =useCareEvents();
     const getCareSchedules = async () => {
         const response = await fetch('/api/care-schedule', {
             cache: 'no-store',
@@ -267,7 +269,7 @@ export default function TodayPage() {
         <Grid container spacing={2} sx={{ mt: 5 }}>
             <Grid container direction="column" spacing={2} size={{ xs: 12, md: 6 }}>
                 <Grid size={12}>
-                    <ProfileCard handleOpenEditModal={handleOpenEditModal} nameOfPet={name} metadataOfPet={metadata} dataLoadingState={loading} />
+                    <ProfileCard handleOpenEditModal={handleOpenEditModal} nameOfPet={name} metadataOfPet={metadata} dataLoadingState={loading} eventStats={careEventsStats} />
                     <EditFormModal openEditModal={openEditModal} handleCloseEditModal={handleCloseEditModal} formSchema={schema} onSubmit={updateProfile} title={`${name || 'Your pet'}'s details`} />
                 </Grid>
                 <Grid size={12}>
