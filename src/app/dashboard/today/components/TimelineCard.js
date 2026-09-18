@@ -26,7 +26,7 @@ const statusDetails = {
 export default function TimelineCard({
   handleOpenCareModal,
   careEvents = [],
-  onEventMenuAction=()=>{},
+  onEventMenuAction = () => { },
 }) {
   const handleOpenModal = () => {
     handleOpenCareModal(true);

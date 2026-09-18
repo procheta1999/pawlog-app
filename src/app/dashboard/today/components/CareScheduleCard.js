@@ -20,7 +20,7 @@ const eventIcons = {
 export default function CareScheduleCard({
     handleOpenCareScheduleModal,
     careSchedules = [],
-    onEventMenuAction = () => {},
+    onEventMenuAction = () => { },
 }) {
     const handleOpenModal = () => {
         handleOpenCareScheduleModal(true);
@@ -38,7 +38,7 @@ export default function CareScheduleCard({
                     What&apos;s your pet&apos;s care schedule?
                 </Typography>
                 <Typography sx={{ color: 'text.secondary', mb: 1.5 }}>Before setting up care events, we want to know the care schedule of your pet which will help us setup the care timeline better</Typography>
-                <Typography variant="body2" sx={{mb:2}}>
+                <Typography variant="body2" sx={{ mb: 2 }}>
                     Please make sure your pet&apos;s stomach is not empty for more than 6-7 hours because that might lead to gastristis. Please consult the vet for further details.
                 </Typography>
                 {timelineItems.length > 0 && (

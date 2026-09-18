@@ -13,40 +13,40 @@ import EditIcon from '@mui/icons-material/Edit';
 import ActionCard from './ActionCard';
 
 
-const ProfileCardHeader=({openEditModalOp, nameOfPet, metadataOfPet})=>{
+const ProfileCardHeader = ({ openEditModalOp, nameOfPet, metadataOfPet }) => {
 
-    return(
-        <CardHeader
-        avatar={
-          <Avatar
-            src="/juno.jpg"
-            alt="Juno the indie"
-            sx={{
-              width: { xs: 96, sm: 128 },
-              height: { xs: 96, sm: 128 },
-              '& img': {
-                objectFit: 'cover',
-                objectPosition: 'center',
-              },
-            }}
-          />
-        }
-        action={
-          <IconButton aria-label="edit profile" onClick={openEditModalOp}>
-            <EditIcon/>
-          </IconButton>
-        }
-        title={<TitleHeader variant="h5" className={styles.name} content={nameOfPet}/>} 
-        subheader={<Typography color="text.secondary" className={styles.metadata}>
-                  {metadataOfPet}
-                </Typography>}
-      />
-    )
+  return (
+    <CardHeader
+      avatar={
+        <Avatar
+          src="/juno.jpg"
+          alt="Juno the indie"
+          sx={{
+            width: { xs: 96, sm: 128 },
+            height: { xs: 96, sm: 128 },
+            '& img': {
+              objectFit: 'cover',
+              objectPosition: 'center',
+            },
+          }}
+        />
+      }
+      action={
+        <IconButton aria-label="edit profile" onClick={openEditModalOp}>
+          <EditIcon />
+        </IconButton>
+      }
+      title={<TitleHeader variant="h5" className={styles.name} content={nameOfPet} />}
+      subheader={<Typography color="text.secondary" className={styles.metadata}>
+        {metadataOfPet}
+      </Typography>}
+    />
+  )
 }
-export default function ProfileCard({handleOpenEditModal, nameOfPet, metadataOfPet, dataLoadingState, eventStats=[]}) {
-    const openEditModalOp=()=>{
-        handleOpenEditModal(true);
-    }
+export default function ProfileCard({ handleOpenEditModal, nameOfPet, metadataOfPet, dataLoadingState, eventStats = [] }) {
+  const openEditModalOp = () => {
+    handleOpenEditModal(true);
+  }
   return (
     <Card
       variant="outlined"
@@ -55,7 +55,7 @@ export default function ProfileCard({handleOpenEditModal, nameOfPet, metadataOfP
       sx={{ position: 'relative' }}
     >
       <Box sx={{ visibility: dataLoadingState ? 'hidden' : 'visible' }}>
-        <ProfileCardHeader openEditModalOp={openEditModalOp} nameOfPet={nameOfPet} metadataOfPet={metadataOfPet}/>
+        <ProfileCardHeader openEditModalOp={openEditModalOp} nameOfPet={nameOfPet} metadataOfPet={metadataOfPet} />
         <CardContent>
           <Box className={actionStyles.cards}>
             {eventStats.map((eventStat) => (
