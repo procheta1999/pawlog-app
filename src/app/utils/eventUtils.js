@@ -36,7 +36,7 @@ export const CATEGORY_OPTIONS = {
 export const careSchema = [
     { field: 'eventType', value: 'meal', type: 'dropdown', category: 'event' },
     { field: 'description', value: '', type: 'input', category: 'input' },
-    { field: 'eventDate', value: '', type: 'datePicker', category: 'date' },
+    { field: 'eventDate', value: '', type: 'datePicker', category: 'date', disabled: true },
     { field: 'eventTime', value: '', type: 'timePicker', category: 'time' },
     { field: 'timeCertainty', value: 'exact', type: 'radio', category: 'timeCertainty' },
     { field: 'status', value: 'confirmed', type: 'dropdown', category: 'status' },
