@@ -1,5 +1,6 @@
 import {
   deleteCareEvent,
+  getCareEventsByDate,
   getTodayCareEventStatusCounts,
   getTodayCareEvents,
   updateCareEvent,
@@ -19,6 +20,21 @@ export async function getCareEventsController() {
     return { data: await getTodayCareEvents(), status: 200 };
   } catch (error) {
     return { error: error.message || 'Failed to fetch care events', status: error.status || 500 };
+  }
+}
+
+export async function getCareEventsByDateController(selectedDate) {
+  if (!selectedDate || Number.isNaN(Date.parse(`${selectedDate}T00:00:00`))) {
+    return { error: 'A valid date is required', status: 400 };
+  }
+
+  try {
+    return { data: await getCareEventsByDate(selectedDate), status: 200 };
+  } catch (error) {
+    return {
+      error: error.message || 'Failed to fetch care events for the selected date',
+      status: error.status || 500,
+    };
   }
 }
 

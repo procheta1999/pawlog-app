@@ -135,6 +135,24 @@ export async function getTodayCareEvents() {
   return events.map(formatEvent);
 }
 
+export async function getCareEventsByDate(selectedDate) {
+  await connectDB();
+
+  const petId = await getCurrentPetId('A pet profile is required before managing care events');
+  const { start, end } = getDayRange(new Date(`${selectedDate}T00:00:00`));
+
+  if (start.getTime() === getDayRange().start.getTime()) {
+    await createTodayCareEventsFromSchedule(petId, start, end);
+  }
+
+  const events = await PetCareEventsSchedule.find({
+    petId,
+    date: { $gte: start, $lt: end },
+  }).sort({ eventTime: 1, createdAt: 1 }).lean();
+
+  return events.map(formatEvent);
+}
+
 export async function getTodayCareEventStatusCounts() {
   await connectDB();
 
