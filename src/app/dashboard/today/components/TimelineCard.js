@@ -64,7 +64,10 @@ export default function TimelineCard({
         <Timeline
           items={timelineItems}
           onEventMenuAction={onEventMenuAction}
-          eventMenuItems={[{ label: 'Edit event', value: 'edit' }]}
+          eventMenuItems={[
+            { label: 'Edit event', value: 'edit' },
+            { label: 'Delete event', value: 'delete' },
+          ]}
         />
       </Box>
       {dataLoadingState && <DashboardLoader />}

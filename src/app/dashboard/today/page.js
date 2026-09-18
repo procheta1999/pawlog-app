@@ -250,10 +250,29 @@ export default function TodayPage() {
 
         handleCloseConflictResolutionModal();
     };
-    const handleCareEventMenuAction = (event, action) => {
+    const deleteCareEvent = async (event) => {
+        const response = await fetch(`/api/care-events?id=${encodeURIComponent(event.id)}`, {
+            method: 'DELETE',
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to delete care event');
+        }
+
+        const deletedEvent = await response.json();
+        setCareEvents((currentEvents) => (
+            currentEvents.filter((currentEvent) => currentEvent.id !== deletedEvent.id)
+        ));
+        await getCareEventsStatusCounts();
+    };
+    const handleCareEventMenuAction = async (event, action) => {
         if (action === 'edit') {
             setEditingCareEvent(event);
             handleOpenCareModal(true);
+        }
+
+        if (action === 'delete') {
+            await deleteCareEvent(event);
         }
     };
     const careScheduleFormSchema = editingCareSchedule
