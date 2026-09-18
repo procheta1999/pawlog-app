@@ -1,12 +1,12 @@
-export const DashboardItems=[
+export const DashboardItems = [
   {
-    label:"Today",
-    value:"one",
-    route:"/dashboard/today"
+    label: "Today",
+    value: "one",
+    route: "/dashboard/today"
   },
   {
-    label:"Timeline",
-    value:"two",
-    route:"/dashboard/timeline"
+    label: "Timeline",
+    value: "two",
+    route: "/dashboard/timeline"
   }
 ];
