@@ -25,7 +25,7 @@ export default function TodayLayout({ children }) {
       </Grid>
       <Grid size={{ xs: 12, md: 'auto' }} offset={{ md: 'auto' }}>
         <TodayDatePicker
-        label="Today"
+          label="Today"
           value={dayjs()}
           onChange={() => { }}
           isEditable={false}

@@ -8,18 +8,14 @@ import EventIcon from '@mui/icons-material/Event';
 import MedicationIcon from '@mui/icons-material/Medication';
 import RestaurantIcon from '@mui/icons-material/Restaurant';
 import DirectionsWalkIcon from '@mui/icons-material/DirectionsWalk';
-import dayjs from 'dayjs';
 import Timeline from '../../components/Timeline';
+import { getCareScheduleTimelineItems } from '@/app/utils/eventUtils';
 
 const eventIcons = {
     meal: RestaurantIcon,
     walk: DirectionsWalkIcon,
     medication: MedicationIcon,
 };
-
-function formatEventType(eventType) {
-    return eventType.replaceAll('_', ' ').replace(/\b\w/g, (character) => character.toUpperCase());
-}
 
 export default function CareScheduleCard({
     handleOpenCareScheduleModal,
@@ -29,17 +25,11 @@ export default function CareScheduleCard({
     const handleOpenModal = () => {
         handleOpenCareScheduleModal(true);
     };
-    const timelineItems = careSchedules.map((schedule) => ({
-        ...schedule,
-        sourceEvent: schedule,
-        id: schedule.id,
-        time: dayjs(schedule.eventTime).format('HH:mm'),
-        title: schedule.description || formatEventType(schedule.eventType),
-        description: schedule.notes || formatEventType(schedule.eventType),
-        status: 'Scheduled',
-        statusClass: 'scheduled',
-        icon: eventIcons[schedule.eventType] || EventIcon,
-    }));
+    const timelineItems = getCareScheduleTimelineItems(
+        careSchedules,
+        eventIcons,
+        EventIcon,
+    );
 
     return (
         <Card sx={{ minWidth: 275 }}>

@@ -8,6 +8,7 @@ import Typography from '@mui/material/Typography';
 import styles from './TimelineCard.module.css';
 import DashboardButton from '../../components/DashboardButton';
 import Timeline from '../../components/Timeline';
+import { getCareEventTimelineItems } from '@/app/utils/eventUtils';
 
 const eventIcons = {
   meal: RestaurantIcon,
@@ -22,34 +23,6 @@ const statusDetails = {
   scheduled: { label: 'Scheduled', className: 'scheduled' },
 };
 
-function formatEventType(eventType) {
-  return eventType.replaceAll('_', ' ').replace(/\b\w/g, (character) => character.toUpperCase());
-}
-
-function getTimelineItems(careEvents) {
-  return careEvents.map((event) => {
-    const status = statusDetails[event.status] || {
-      label: formatEventType(event.status),
-      className: 'needsReview',
-    };
-
-    return {
-      ...event,
-      sourceEvent: event,
-      time: new Date(event.eventTime).toLocaleTimeString([], {
-        hour: '2-digit',
-        minute: '2-digit',
-        hour12: false,
-      }),
-      title: event.description || formatEventType(event.eventType),
-      description: event.quantityDetails || event.notes || formatEventType(event.eventType),
-      status: status.label,
-      statusClass: status.className,
-      icon: eventIcons[event.eventType] || EventIcon,
-    };
-  });
-}
-
 export default function TimelineCard({
   handleOpenCareModal,
   careEvents = [],
@@ -58,7 +31,12 @@ export default function TimelineCard({
   const handleOpenModal = () => {
     handleOpenCareModal(true);
   };
-  const timelineItems = getTimelineItems(careEvents);
+  const timelineItems = getCareEventTimelineItems(
+    careEvents,
+    statusDetails,
+    eventIcons,
+    EventIcon,
+  );
 
   return (
     <Card variant="outlined" className={styles.card} sx={{ p: { xs: 1, md: 2 } }}>

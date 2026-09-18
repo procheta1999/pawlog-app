@@ -1,50 +1,21 @@
 "use client";
 
 import React, { useCallback, useEffect, useState } from 'react';
-import dayjs from 'dayjs';
 import Grid from '@mui/material/Grid';
 import ProfileCard from "./components/ProfileCard";
 import EditFormModal from './components/EditFormModal';
 import TimelineCard from './components/TimelineCard';
 import { useProfile } from '@/app/utils/ProfileContext';
-import { careScheduleSchema, careSchema } from '@/app/utils/eventUtils';
+import {
+    careScheduleSchema,
+    careSchema,
+    getCareEventFormSchema,
+    getCareScheduleFormSchema,
+    sortCareEventsByTime,
+    sortCareSchedulesByTime,
+} from '@/app/utils/eventUtils';
 import CareScheduleCard from './components/CareScheduleCard';
 import { useCareEvents } from '@/app/utils/EventsContext';
-
-const getCareScheduleFieldValue=(field, careSchedule)=> {
-    if (field.field === 'eventTime') {
-        return dayjs(careSchedule.eventTime);
-    }
-
-    return careSchedule[field.field] ?? field.value;
-}
-
-const getCareScheduleFormSchema=(careSchedule)=> {
-    return careScheduleSchema.map((field) => ({
-        ...field,
-        value: getCareScheduleFieldValue(field, careSchedule),
-    }));
-}
-
-const getCareEventFieldValue=(field, careEvent)=> {
-    if (field.field === 'eventDate') {
-        return dayjs(careEvent.eventDate);
-    }
-
-    if (field.field === 'eventTime') {
-        return dayjs(careEvent.eventTime);
-    }
-
-    return careEvent[field.field] ?? field.value;
-}
-
-const getCareEventFormSchema=(careEvent)=> {
-    return careSchema.map((field) => ({
-        ...field,
-        disabled: field.field === 'eventType' || field.disabled,
-        value: getCareEventFieldValue(field, careEvent),
-    }));
-}
 
 export default function TodayPage() {
     const [openEditModal, setOpenEditModal] = useState(false);
@@ -55,7 +26,7 @@ export default function TodayPage() {
     const [careEvents, setCareEvents] = useState([]);
     const [editingCareEvent, setEditingCareEvent] = useState(null);
     const { schema, name, metadata, loading, setProfile } = useProfile();
-    const {careEventsStats, setEventsCount} =useCareEvents();
+    const { careEventsStats, setEventsCount } = useCareEvents();
     const getCareSchedules = async () => {
         const response = await fetch('/api/care-schedule', {
             cache: 'no-store',
@@ -175,11 +146,7 @@ export default function TodayPage() {
                 ))
                 : [...currentSchedules, savedSchedule];
 
-            return schedules.sort(
-                (firstSchedule, secondSchedule) => (
-                    new Date(firstSchedule.eventTime) - new Date(secondSchedule.eventTime)
-                ),
-            );
+            return sortCareSchedulesByTime(schedules);
         });
         setCareEvents(await getCareEvents());
         handleCloseCareScheduleModal();
@@ -243,9 +210,7 @@ export default function TodayPage() {
                 ))
                 : [...currentEvents, savedEvent];
 
-            return events.sort((firstEvent, secondEvent) => (
-                new Date(firstEvent.eventTime) - new Date(secondEvent.eventTime)
-            ));
+            return sortCareEventsByTime(events);
         });
         await getCareEventsStatusCounts();
         handleCloseCareModal();
