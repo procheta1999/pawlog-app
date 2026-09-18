@@ -28,6 +28,7 @@ export default function TimelineCard({
   handleOpenCareModal,
   careEvents = [],
   dataLoadingState = false,
+  isCareScheduleEmpty = false,
   onEventMenuAction = () => { },
 }) {
   const handleOpenModal = () => {
@@ -54,6 +55,7 @@ export default function TimelineCard({
           </Typography>
           <DashboardButton
             onClick={handleOpenModal}
+            disabled={isCareScheduleEmpty}
           >
             Record care event
           </DashboardButton>

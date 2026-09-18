@@ -9,6 +9,7 @@ import TodayDatePicker from './components/DatePicker';
 export default function TodayLayout({ children }) {
   const { name, petParent } = useProfile();
   const petName = name || 'your pet';
+  const petParentName= petParent || 'human';
 
   return (<>
     <Grid container spacing={3} sx={{ mt: 5 }}>
@@ -16,7 +17,7 @@ export default function TodayLayout({ children }) {
         <TitleHeader
           variant="h4"
           sx={{ typography: { xs: 'h5', md: 'h4' } }}
-          content={`Good day, ${petParent}!`}
+          content={`Good day, ${petParentName}!`}
         />
         <SubtitleHeader
           variant="subtitle1"

@@ -284,6 +284,7 @@ export default function TodayPage() {
                     handleOpenCareModal={handleOpenCareModal}
                     careEvents={careEvents}
                     dataLoadingState={careEventsLoading}
+                    isCareScheduleEmpty={careSchedules.length === 0}
                     onEventMenuAction={handleCareEventMenuAction}
                 />
                 <EditFormModal key={editingCareEvent?.id || 'new-care-event'} openEditModal={openCareModal} handleCloseEditModal={handleCloseCareModal} formSchema={careEventFormSchema} onSubmit={saveCareEvent} title="Record Care Event" />
